@@ -7,36 +7,54 @@ public class MySQL {
 
     Connection connection = null;
     Statement statement = null;
-    String sql = "";
-    int counter = 0;
 
-    public void SQLConnector(){
+    public void SQLConnector() {
 
         // registering JDBC Driver
 
-        try{
+        try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             System.out.println("Connecting to Database...\n");
-            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/library_database","root","");
+            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/library_database", "root", "");
             System.out.println("Connected to Database Successfully!\n");
-            statement = connection.createStatement();
-        } catch (Exception e){
+            statement = connection.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+        } catch (Exception e) {
             System.out.println(e + "\n");
-            counter++;
         }
     }
 
-    public String createSQLString(int ID1, String name1, String email_address1, String phone_number1, String table1){
-        return "INSERT INTO " + table1 + " " + "VALUES (" + ID1 + "," + "'" + name1 + "','" + email_address1 + "'," + phone_number1 + ")";
+    public void SQLDisconnector() {
+        try {
+            connection.close();
+        } catch (SQLException se) {
+            System.out.println(se + "\n");
+            System.out.println("Disconnected from Database unsuccessfully!\n");
+        }
+    }
+
+    public String addDatabaseSQLString(int ID1, String val1, String val2, String val3, String table1) {
+        return "INSERT INTO " + table1 + " " + "VALUES (" + ID1 + "," + "'" + val1 + "','" + val2 + "'," + val3 + ")";
+    }
+
+    public String deleteDatabaseSQLString(String table2, String rowName, String rowValue) {
+        System.out.println("DELETE FROM " + table2 + " WHERE " + rowName + "='" + rowValue + "'\n");
+        return "DELETE FROM " + table2 + " WHERE " + rowName + "='" + rowValue + "'";
 
     }
 
-    public void addToDatabase(int ID, String name, String email_address, String phone_number, String table){
+    public static String sqlSplitter(String sql2) {
+        String[] sqlSplit = sql2.split(",", 2);
+        return sqlSplit[1];
 
+    }
+
+    public void addToDatabase(int ID, String val1, String val2, String val3, String table) {
+        String sql = "";
+        int counter = 0;
         try {
-            sql = createSQLString(ID,name,email_address,phone_number,table);
+            sql = addDatabaseSQLString(ID, val1, val2, val3, table);
             statement.executeUpdate(sql);
-        } catch (SQLException se){
+        } catch (SQLException se) {
             System.out.println(se + "\n");
             System.out.println("A duplicate entry has been added, please try again!\n");
             counter++;
@@ -44,19 +62,41 @@ public class MySQL {
             if (counter == 0) {
                 System.out.println("Added " + sqlSplitter(sql) + " to the Database!\n");
             } else {
-                System.out.println("Data: "  + sqlSplitter(sql) +  " has NOT been successfully added!\n");
-            }
-            try {
-                connection.close();
-            } catch (SQLException se){
-                System.out.println(se + "\n");
+                System.out.println("Data: " + sqlSplitter(sql) + " has NOT been successfully added!\n");
             }
         }
     }
 
-    public static String sqlSplitter(String sql2){
-        String[] sqlSplit = sql2.split(",", 2);
-        return sqlSplit[1];
+    public void deleteFromDatabase(String table3, String rowName1, String rowValue1) {
+        String sql1 = "";
+        int counter1 = 0;
+        try {
+            sql1 = deleteDatabaseSQLString(table3, rowName1, rowValue1);
+            statement.executeUpdate(sql1);
+
+        } catch (SQLException se) {
+            System.out.println(se);
+            counter1++;
+        } finally {
+            if (counter1 == 0) {
+                System.out.println("Deleted from the Database!\n");
+            } else {
+                System.out.println("Data has NOT been successfully deleted!\n");
+            }
+        }
+    }
+
+    public int getUserAccountData() {
+        int id_value = 1;
+        try {
+            ResultSet rs = statement.executeQuery("select * from users ");
+            rs.absolute(1);
+            id_value = rs.getInt(1);
+
+        } catch (SQLException se) {
+            System.out.println(se);
+        }
+        return id_value;
 
     }
 }
