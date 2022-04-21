@@ -13,8 +13,7 @@ public class main {
 
 
         //EmailSender em = new EmailSender();
-        //em.sendEmail("sameerdalal747@gmail.com", "hello", "test");
-    }
+        //em.sendEmail("akhilgosala12@gmail.com")
 
     public void loginToUserAccount() {
         ms.SQLConnector();
