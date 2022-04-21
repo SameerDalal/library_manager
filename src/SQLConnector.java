@@ -3,7 +3,7 @@ import java.sql.*;
 import java.sql.DriverManager;
 
 
-public class MySQL {
+public class SQLConnector {
 
     Connection connection = null;
     Statement statement = null;
@@ -37,43 +37,30 @@ public class MySQL {
     }
 
     public String deleteDatabaseSQLString(String table2, String rowName, String rowValue) {
-        System.out.println("DELETE FROM " + table2 + " WHERE " + rowName + "='" + rowValue + "'\n");
         return "DELETE FROM " + table2 + " WHERE " + rowName + "='" + rowValue + "'";
-
-    }
-
-    public static String sqlSplitter(String sql2) {
-        String[] sqlSplit = sql2.split(",", 2);
-        return sqlSplit[1];
-
     }
 
     public void addToDatabase(int ID, String val1, String val2, String val3, String table) {
-        String sql = "";
         int counter = 0;
         try {
-            sql = addDatabaseSQLString(ID, val1, val2, val3, table);
-            statement.executeUpdate(sql);
+            statement.executeUpdate(addDatabaseSQLString(ID,val1, val2, val3, table));
         } catch (SQLException se) {
             System.out.println(se + "\n");
             System.out.println("A duplicate entry has been added, please try again!\n");
             counter++;
         } finally {
             if (counter == 0) {
-                System.out.println("Added " + sqlSplitter(sql) + " to the Database!\n");
+                System.out.println("Added " + ID + " " + val1 + " " + val2 + " " + val3 + " to the Database!\n");
             } else {
-                System.out.println("Data: " + sqlSplitter(sql) + " has NOT been successfully added!\n");
+                System.out.println("Data: " + ID + " " + val1 + " " + val2 + " " + val3 + " has NOT been successfully added!\n");
             }
         }
     }
 
     public void deleteFromDatabase(String table3, String rowName1, String rowValue1) {
-        String sql1 = "";
         int counter1 = 0;
         try {
-            sql1 = deleteDatabaseSQLString(table3, rowName1, rowValue1);
-            statement.executeUpdate(sql1);
-
+            statement.executeUpdate(deleteDatabaseSQLString(table3, rowName1, rowValue1));
         } catch (SQLException se) {
             System.out.println(se);
             counter1++;
@@ -86,12 +73,50 @@ public class MySQL {
         }
     }
 
-    public int getUserAccountData() {
-        int id_value = 1;
+    public void getUserCreatedID() {
+        try {
+            ResultSet rs = statement.executeQuery("SELECT id FROM users ");
+            int numberOfRows = 0;
+            while (rs.next()){
+                numberOfRows++;
+            }
+            System.out.println(rs.getInt(numberOfRows-1 ));
+        } catch (SQLException se){
+            System.out.println(se);
+        }
+
+    }
+
+    public boolean checkIfIDExists(int idInputted){
+        boolean idExists = false;
+        try {
+            ResultSet rs = statement.executeQuery("SELECT id FROM users ");
+            while(rs.next()){
+                if (rs.getInt(1) == idInputted){
+                    idExists = true;
+                }
+            }
+        } catch (SQLException se){
+            System.out.println(se);
+        }
+        return idExists;
+    }
+}
+
+
+/*
+    public int getUserCreatedID2(){
+        int id_value = 0;
         try {
             ResultSet rs = statement.executeQuery("select * from users ");
+
+            int numberOfRows = 0;
+            while (rs.next()){
+                numberOfRows++;
+            }
             rs.absolute(1);
-            id_value = rs.getInt(1);
+            System.out.println(numberOfRows);
+            id_value = rs.getInt(numberOfRows-1);
 
         } catch (SQLException se) {
             System.out.println(se);
@@ -99,4 +124,6 @@ public class MySQL {
         return id_value;
 
     }
-}
+
+ */
+
