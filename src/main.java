@@ -34,11 +34,11 @@ public class main {
 
                 String bookCheckedOut = "0";
 
-                ms.addToDatabase(id_value, name, email_address, bookCheckedOut, "users");
+                ms.addToDatabase(id_value, name, email_address, bookCheckedOut, "users ");
 
-                ms.getUserCreatedID();
+                int unique_ID = ms.getUserCreatedID();
 
-                goTo();
+                goTo(unique_ID);
                 break;
 
             case (2):
@@ -54,18 +54,25 @@ public class main {
                         IDFalse = false;
                     }
                 }
-                goTo();
+                goTo(id_number);
                 break;
         }
     }
 
-    public void goTo(){
+    public void goTo(int ID){
 
     System.out.println("Options: \n1). Checkout a book\n2). Search for a book in the database\n3). Return a book");
 
         switch (scan.nextInt()){
             case (1):
-                // checkout a book
+                System.out.println("Enter the book ID of the book you would like to checkout or enter '0' to return to the menu\n");
+                int path = scan.nextInt();
+                if (path == 0){
+                    goTo(ID);
+                } else {
+                    ms.checkoutBook(path,ID);
+                    goTo(ID);
+                }
                 break;
             case (2):
                 // search a book

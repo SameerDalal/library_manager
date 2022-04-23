@@ -1,6 +1,7 @@
 
 import java.sql.*;
 import java.sql.DriverManager;
+import java.util.Scanner;
 
 
 public class SQLConnector {
@@ -20,6 +21,7 @@ public class SQLConnector {
             statement = connection.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
         } catch (Exception e) {
             System.out.println(e + "\n");
+            System.out.println("Error Code 1");
         }
     }
 
@@ -29,6 +31,7 @@ public class SQLConnector {
         } catch (SQLException se) {
             System.out.println(se + "\n");
             System.out.println("Disconnected from Database unsuccessfully!\n");
+            System.out.println("Error Code 2");
         }
     }
 
@@ -48,6 +51,7 @@ public class SQLConnector {
             System.out.println(se + "\n");
             System.out.println("A duplicate entry has been added, please try again!\n");
             counter++;
+            System.out.println("Error Code 3");
         } finally {
             if (counter == 0) {
                 System.out.println("Added " + ID + " " + val1 + " " + val2 + " " + val3 + " to the Database!\n");
@@ -64,6 +68,7 @@ public class SQLConnector {
         } catch (SQLException se) {
             System.out.println(se);
             counter1++;
+            System.out.println("Error Code 4");
         } finally {
             if (counter1 == 0) {
                 System.out.println("Deleted from the Database!\n");
@@ -73,18 +78,22 @@ public class SQLConnector {
         }
     }
 
-    public void getUserCreatedID() {
+    public int getUserCreatedID() {
+        int userCreatedID = 0;
+        int numberOfRows = 0;
         try {
-            ResultSet rs = statement.executeQuery("SELECT id FROM users ");
-            int numberOfRows = 0;
+            ResultSet rs = statement.executeQuery("SELECT * FROM users ");
             while (rs.next()){
                 numberOfRows++;
             }
-            System.out.println(rs.getInt(numberOfRows-1 ));
+            rs.absolute(numberOfRows);
+            userCreatedID = rs.getInt("id");
         } catch (SQLException se){
             System.out.println(se);
+            System.out.println("Error Code 5");
         }
-
+        System.out.println("Your unique ID: " + userCreatedID + "\n");
+        return userCreatedID;
     }
 
     public boolean checkIfIDExists(int idInputted){
@@ -98,8 +107,36 @@ public class SQLConnector {
             }
         } catch (SQLException se){
             System.out.println(se);
+            System.out.println("Error Code 6");
         }
         return idExists;
+    }
+
+    public void checkoutBook(int book_id, int user_id){
+        Scanner scan = new Scanner(System.in);
+        int rowCounter = 0;
+        try {
+            ResultSet rs = statement.executeQuery("SELECT id FROM books ");
+            while (rs.next()){
+                rowCounter++;
+                if (rs.getInt(1) == book_id){
+                    rs.absolute(rowCounter);
+                    System.out.println("Confirm book:\nAuthor: " + rs.getString(2) + "\nBook Name: " + rs.getString(3) + "\nStock: " +rs.getInt(4) + "\n");
+                    System.out.println("1).Confirm\n2).Decline\n");
+                    int confirmOrDecline = scan.nextInt();
+                    if (confirmOrDecline == 1 && rs.getInt(4) > 0){
+                        int stockLeftAfterCheckout = rs.getInt(4)-1;
+                        statement.executeUpdate("UPDATE `books` SET `stock` = " + "'" + stockLeftAfterCheckout + "'" + " WHERE `books`.`id` = " + book_id);
+                        statement.executeUpdate("UPDATE `users` SET `Book Checked Out` = " + "'" + book_id + "'" + " WHERE `users`.`id` = " + user_id);
+                        // need to be able to access both tables so that it may update books table as well as users table
+                    }
+                }
+            }
+            System.out.println("Something went wrong. Try Again\n");
+        } catch (SQLException se) {
+            System.out.println(se);
+            System.out.println("Error Code 7");
+        }
     }
 }
 
