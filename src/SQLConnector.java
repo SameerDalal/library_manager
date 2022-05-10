@@ -1,4 +1,3 @@
-
 import java.sql.*;
 import java.sql.DriverManager;
 import java.util.Scanner;
@@ -112,11 +111,12 @@ public class SQLConnector {
         return idExists;
     }
 
-    public void checkoutBook(int book_id, int user_id){
+    public String[] checkoutProcedure(int book_id){
         Scanner scan = new Scanner(System.in);
+        String[] bookProperties = new String[2];
         int rowCounter = 0;
         try {
-            ResultSet rs = statement.executeQuery("SELECT id FROM books ");
+            ResultSet rs = statement.executeQuery("SELECT * FROM books ");
             while (rs.next()){
                 rowCounter++;
                 if (rs.getInt(1) == book_id){
@@ -125,18 +125,49 @@ public class SQLConnector {
                     System.out.println("1).Confirm\n2).Decline\n");
                     int confirmOrDecline = scan.nextInt();
                     if (confirmOrDecline == 1 && rs.getInt(4) > 0){
-                        int stockLeftAfterCheckout = rs.getInt(4)-1;
-                        statement.executeUpdate("UPDATE `books` SET `stock` = " + "'" + stockLeftAfterCheckout + "'" + " WHERE `books`.`id` = " + book_id);
-                        statement.executeUpdate("UPDATE `users` SET `Book Checked Out` = " + "'" + book_id + "'" + " WHERE `users`.`id` = " + user_id);
-                        // need to be able to access both tables so that it may update books table as well as users table
+                        bookProperties[0] = String.valueOf(rs.getInt(4)-1);
+                        bookProperties[1] = "True";
                     }
                 }
             }
-            System.out.println("Something went wrong. Try Again\n");
         } catch (SQLException se) {
             System.out.println(se);
             System.out.println("Error Code 7");
         }
+        return bookProperties;
+    }
+
+    public boolean checkoutBookUpdateBookList(String[] bookProperties, int book_id){
+        boolean toContinue = false;
+        if (bookProperties[1] == "True"){
+            try {
+                statement.executeUpdate("UPDATE `books` SET `stock` = " + "'" + bookProperties[0] + "'" + " WHERE `books`.`id` = " + book_id);
+                toContinue = true;
+            } catch (SQLException se){
+                System.out.println(se);
+                System.out.println("Error Code 8");
+            }
+        }
+        return toContinue;
+    }
+
+    public void checkoutBookUpdateUserList(int bookID, int userID, boolean toContinue1){
+        if(toContinue1){
+            try{
+                ResultSet rs = statement.executeQuery("SELECT * FROM users ");
+                if(rs.next()) {
+                    statement.executeUpdate("UPDATE `users` SET `Book Checked Out` = " + "'" + bookID + "'" + " WHERE `users`.`id` = " + userID);
+                    System.out.println("Successfully checked out the book!");
+                }
+            } catch (SQLException se){
+                System.out.println(se);
+                System.out.println("Error Code 9");
+            }
+
+
+        }
+
+
     }
 }
 
@@ -146,7 +177,6 @@ public class SQLConnector {
         int id_value = 0;
         try {
             ResultSet rs = statement.executeQuery("select * from users ");
-
             int numberOfRows = 0;
             while (rs.next()){
                 numberOfRows++;
@@ -154,13 +184,9 @@ public class SQLConnector {
             rs.absolute(1);
             System.out.println(numberOfRows);
             id_value = rs.getInt(numberOfRows-1);
-
         } catch (SQLException se) {
             System.out.println(se);
         }
         return id_value;
-
     }
-
  */
-

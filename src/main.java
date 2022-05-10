@@ -36,42 +36,43 @@ public class main {
 
                 ms.addToDatabase(id_value, name, email_address, bookCheckedOut, "users ");
 
-                int unique_ID = ms.getUserCreatedID();
+                id_number = ms.getUserCreatedID();
 
-                goTo(unique_ID);
+                goTo();
                 break;
 
             case (2):
                 System.out.println("To log into your account type your id number: ");
-                int idNumber = scan.nextInt();
+                id_number = scan.nextInt();
 
                 boolean IDFalse = true;
                 while (IDFalse) {
-                    if (!(ms.checkIfIDExists(idNumber))) {
+                    if (!(ms.checkIfIDExists(id_number))) {
                         System.out.println("The ID you entered is not in the database, try again.");
-                        idNumber = scan.nextInt();
+                        id_number = scan.nextInt();
                     } else {
                         IDFalse = false;
                     }
                 }
-                goTo(id_number);
+                goTo();
                 break;
         }
     }
 
-    public void goTo(int ID){
+    public void goTo(){
 
-    System.out.println("Options: \n1). Checkout a book\n2). Search for a book in the database\n3). Return a book");
+        System.out.println("Options: \n1). Checkout a book\n2). Search for a book in the database\n3). Return a book");
 
         switch (scan.nextInt()){
             case (1):
                 System.out.println("Enter the book ID of the book you would like to checkout or enter '0' to return to the menu\n");
                 int path = scan.nextInt();
                 if (path == 0){
-                    goTo(ID);
+                    goTo();
                 } else {
-                    ms.checkoutBook(path,ID);
-                    goTo(ID);
+
+                    ms.checkoutBookUpdateUserList(path,id_number,ms.checkoutBookUpdateBookList(ms.checkoutProcedure(path),path));
+                    goTo();
                 }
                 break;
             case (2):
