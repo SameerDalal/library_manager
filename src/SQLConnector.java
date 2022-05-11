@@ -163,14 +163,31 @@ public class SQLConnector {
                 System.out.println(se);
                 System.out.println("Error Code 9");
             }
-
-
         }
+    }
 
+    public void printBookList(){
+        System.out.println("ID-----------Author-----------Name-----------Stock");
+        int rowCounter1 = 0;
+
+        try {
+            ResultSet rs = statement.executeQuery("SELECT * FROM books ");
+            while (rs.next()){
+                rowCounter1 ++;
+            }
+            for (int i = 0; i < rowCounter1; i++){
+                rs.absolute(i);
+                System.out.println(rs.getInt(1) + "  " + rs.getString(2) + "  " + rs.getString(3) + "   " + rs.getInt(4));
+                System.out.println("---------------------------------------------------");
+            }
+
+        } catch (SQLException se){
+            System.out.println(se);
+            System.out.println("Error Code 10");
+        }
 
     }
 }
-
 
 /*
     public int getUserCreatedID2(){

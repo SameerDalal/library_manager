@@ -66,23 +66,26 @@ public class main {
         switch (scan.nextInt()){
             case (1):
                 System.out.println("Enter the book ID of the book you would like to checkout or enter '0' to return to the menu\n");
-                int path = scan.nextInt();
-                if (path == 0){
+                int bookID = scan.nextInt();
+                if (bookID == 0){
                     goTo();
                 } else {
-
-                    ms.checkoutBookUpdateUserList(path,id_number,ms.checkoutBookUpdateBookList(ms.checkoutProcedure(path),path));
+                    ms.checkoutBookUpdateUserList(bookID,id_number,ms.checkoutBookUpdateBookList(ms.checkoutProcedure(bookID),bookID));
                     goTo();
                 }
                 break;
             case (2):
-                // search a book
+                System.out.println("1). Print out entire book list\n2). Search book by ID, Author, or Book Name");
+                if(scan.nextInt() == 1){
+                    ms.printBookList();
+
+                }
+
                 break;
             case (3):
                 // return a book
                 break;
         }
-
         ms.SQLDisconnector();
     }
 }
