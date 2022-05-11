@@ -48,7 +48,6 @@ public class SQLConnector {
             statement.executeUpdate(addDatabaseSQLString(ID,val1, val2, val3, table));
         } catch (SQLException se) {
             System.out.println(se + "\n");
-            System.out.println("A duplicate entry has been added, please try again!\n");
             counter++;
             System.out.println("Error Code 3");
         } finally {
@@ -168,17 +167,16 @@ public class SQLConnector {
 
     public void printBookList(){
         System.out.println("ID-----------Author-----------Name-----------Stock");
-        int rowCounter1 = 0;
+        int rowCounter1 = 1;
 
         try {
             ResultSet rs = statement.executeQuery("SELECT * FROM books ");
             while (rs.next()){
-                rowCounter1 ++;
-            }
-            for (int i = 0; i < rowCounter1; i++){
-                rs.absolute(i);
-                System.out.println(rs.getInt(1) + "  " + rs.getString(2) + "  " + rs.getString(3) + "   " + rs.getInt(4));
+                rs.absolute(rowCounter1);
+                System.out.println(rs.getInt(1) + "              " + rs.getString(2) + "              " + rs.getString(3) + "              " + rs.getInt(4));
                 System.out.println("---------------------------------------------------");
+                rowCounter1++;
+
             }
 
         } catch (SQLException se){

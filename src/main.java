@@ -19,7 +19,7 @@ public class main {
     public void loginToUserAccount() {
         ms.SQLConnector();
 
-        System.out.println("1). New User\n2). Existing User");
+        System.out.println("1). New User\n2). Existing User\n3). Library Staff - Add book to database");
 
         switch (scan.nextInt()) {
             case (1):
@@ -54,6 +54,22 @@ public class main {
                         IDFalse = false;
                     }
                 }
+                goTo();
+                break;
+            case (3):
+                System.out.println("ID:");
+                int ID = scan.nextInt();
+
+                System.out.println("Author: ");
+                String author = scan.next();
+
+                System.out.println("Name: ");
+                String nameOfBook = scan.next();
+
+                System.out.println("Stock: ");
+                String stock = scan.next();
+
+                ms.addToDatabase(ID, author, nameOfBook, stock , "books ");
                 goTo();
                 break;
         }
