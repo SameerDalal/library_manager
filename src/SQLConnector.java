@@ -24,6 +24,7 @@ public class SQLConnector {
         }
     }
 
+
     public void SQLDisconnector() {
         try {
             connection.close();
@@ -184,6 +185,29 @@ public class SQLConnector {
             System.out.println("Error Code 10");
         }
 
+    }
+
+    public void searchInBookList(String searchingFor){
+        int rowCounter2 = 1;
+        boolean bookFound = false;
+        try{
+            ResultSet rs = statement.executeQuery("SELECT * FROM books ");
+            while(rs.next()){
+                rs.absolute(rowCounter2);
+                if((rs.getInt(1) == Integer.parseInt(searchingFor)) || (rs.getString(2) == searchingFor) || (rs.getString(3) == searchingFor)){
+                    System.out.println("ID-----------Author-----------Name-----------Stock");
+                    System.out.println(rs.getInt(1) + "              " + rs.getString(2) + "              " + rs.getString(3) + "              " + rs.getInt(4) + "\n");
+                    bookFound = true;
+                }
+                rowCounter2++;
+            }
+            if(!(bookFound)){
+                System.out.println("This book is not in the library!");
+            }
+        }catch (SQLException se){
+            System.out.println(se);
+
+        }
     }
 }
 

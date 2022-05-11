@@ -19,7 +19,7 @@ public class main {
     public void loginToUserAccount() {
         ms.SQLConnector();
 
-        System.out.println("1). New User\n2). Existing User\n3). Library Staff - Add book to database");
+        System.out.println("1). New User\n2). Existing User\n3). Library Staff - Add book to database\n4). Quit");
 
         switch (scan.nextInt()) {
             case (1):
@@ -41,7 +41,7 @@ public class main {
                 goTo();
                 break;
 
-            case (2):
+            case(2):
                 System.out.println("To log into your account type your id number: ");
                 id_number = scan.nextInt();
 
@@ -72,12 +72,15 @@ public class main {
                 ms.addToDatabase(ID, author, nameOfBook, stock , "books ");
                 goTo();
                 break;
+            case (4):
+                System.exit(0);
+                break;
         }
     }
 
     public void goTo(){
 
-        System.out.println("Options: \n1). Checkout a book\n2). Search for a book in the database\n3). Return a book");
+        System.out.println("Options: \n1). Checkout a book\n2). Search for a book in the database\n3). Return a book\n4). Quit");
 
         switch (scan.nextInt()){
             case (1):
@@ -94,12 +97,20 @@ public class main {
                 System.out.println("1). Print out entire book list\n2). Search book by ID, Author, or Book Name");
                 if(scan.nextInt() == 1){
                     ms.printBookList();
+                } else {
+                    System.out.println("Search by:\n1). ID:\n2). Book Name Or Author:");
+                    ms.searchInBookList(scan.next());
+
 
                 }
+                goTo();
 
                 break;
             case (3):
                 // return a book
+                break;
+            case (4):
+                System.exit(0);
                 break;
         }
         ms.SQLDisconnector();
