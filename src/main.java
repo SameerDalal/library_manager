@@ -89,7 +89,7 @@ public class main {
                 if (bookID == 0){
                     goTo();
                 } else {
-                    ms.checkoutBookUpdateUserList(bookID,id_number,ms.checkoutBookUpdateBookList(ms.checkoutProcedure(bookID),bookID));
+                    ms.checkoutBookUpdateUserList(bookID,id_number,ms.checkoutBookUpdateBookList(ms.bookCheckoutProcedure(bookID),bookID));
                     goTo();
                 }
                 break;
@@ -106,11 +106,11 @@ public class main {
                         System.out.println("Enter ID: ");
                         id = scan.nextInt();
                     } else {
+                        Scanner scan1 = new Scanner(System.in);
                         System.out.println("Enter Book Name or Book Author: ");
 
-                        bookNameOrAuthor = scan.nextLine();
-                        //this line does not work. For some reason scan.nextLine() prints out spaces and skips the option for user input.
-                        System.out.println(bookNameOrAuthor);
+                        bookNameOrAuthor = scan1.nextLine();
+
                     }
 
                     ms.searchInBookList(id,bookNameOrAuthor);

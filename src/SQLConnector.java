@@ -111,7 +111,7 @@ public class SQLConnector {
         return idExists;
     }
 
-    public String[] checkoutProcedure(int book_id){
+    public String[] bookCheckoutProcedure(int book_id){
         Scanner scan = new Scanner(System.in);
         String[] bookProperties = new String[2];
         int rowCounter = 0;
@@ -177,7 +177,6 @@ public class SQLConnector {
                 System.out.println(rs.getInt(1) + "              " + rs.getString(2) + "              " + rs.getString(3) + "              " + rs.getInt(4));
                 System.out.println("---------------------------------------------------");
                 rowCounter1++;
-
             }
 
         } catch (SQLException se){
@@ -188,31 +187,17 @@ public class SQLConnector {
     }
 
     public void searchInBookList(int id, String bookNameOrAuthor){
-        System.out.println(bookNameOrAuthor);
         int rowCounter2 = 1;
         boolean bookFound = false;
         try{
             ResultSet rs = statement.executeQuery("SELECT * FROM books ");
-            while(rs.next()){
+            while(rs.next() && bookFound == false){
                 rs.absolute(rowCounter2);
-                if (id != 0) {
-                    if(rs.getInt(1) == id){
-                        bookFound = true;
-
-                    }
-                }
-                System.out.println(bookNameOrAuthor);
-                if (bookNameOrAuthor != ""){
-                    if ((rs.getString(2) == bookNameOrAuthor) || rs.getString(3) == bookNameOrAuthor){
-                        bookFound = true;
-
-                    }
-                }
-                if (bookFound) {
+                if ((rs.getString(2).equals(bookNameOrAuthor)) || (rs.getString(3).equals(bookNameOrAuthor)) || rs.getInt(1) == id){
                     System.out.println("\nID-----------Author-----------Name-----------Stock");
                     System.out.println(rs.getInt(1) + "              " + rs.getString(2) + "              " + rs.getString(3) + "           " + rs.getInt(4) + "\n");
                     System.out.println("--------------------------------------------------");
-                    break;
+                    bookFound = true;
                 }
                 rowCounter2++;
             }
@@ -221,7 +206,7 @@ public class SQLConnector {
             }
         }catch (SQLException se){
             System.out.println(se);
-
+            System.out.println("Error Code 11");
         }
     }
 }
