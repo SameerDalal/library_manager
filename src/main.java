@@ -95,11 +95,25 @@ public class main {
                 break;
             case (2):
                 System.out.println("1). Print out entire book list\n2). Search book by ID, Author, or Book Name");
-                if(scan.nextInt() == 1){
+                int path = scan.nextInt();
+                if(path == 1){
                     ms.printBookList();
                 } else {
-                    System.out.println("Search by:\n1). ID:\n2). Book Name Or Author:");
-                    ms.searchInBookList(scan.next());
+                    System.out.println("Search by:\n1). ID\n2). Book Name Or Author");
+                    int id = 0;
+                    String bookNameOrAuthor = "";
+                    if(scan.nextInt() == 1){
+                        System.out.println("Enter ID: ");
+                        id = scan.nextInt();
+                    } else {
+                        System.out.println("Enter Book Name or Book Author: ");
+
+                        bookNameOrAuthor = scan.nextLine();
+                        //this line does not work. For some reason scan.nextLine() prints out spaces and skips the option for user input.
+                        System.out.println(bookNameOrAuthor);
+                    }
+
+                    ms.searchInBookList(id,bookNameOrAuthor);
 
 
                 }

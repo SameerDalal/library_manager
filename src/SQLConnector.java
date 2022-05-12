@@ -187,17 +187,32 @@ public class SQLConnector {
 
     }
 
-    public void searchInBookList(String searchingFor){
+    public void searchInBookList(int id, String bookNameOrAuthor){
+        System.out.println(bookNameOrAuthor);
         int rowCounter2 = 1;
         boolean bookFound = false;
         try{
             ResultSet rs = statement.executeQuery("SELECT * FROM books ");
             while(rs.next()){
                 rs.absolute(rowCounter2);
-                if((rs.getInt(1) == Integer.parseInt(searchingFor)) || (rs.getString(2) == searchingFor) || (rs.getString(3) == searchingFor)){
-                    System.out.println("ID-----------Author-----------Name-----------Stock");
-                    System.out.println(rs.getInt(1) + "              " + rs.getString(2) + "              " + rs.getString(3) + "              " + rs.getInt(4) + "\n");
-                    bookFound = true;
+                if (id != 0) {
+                    if(rs.getInt(1) == id){
+                        bookFound = true;
+
+                    }
+                }
+                System.out.println(bookNameOrAuthor);
+                if (bookNameOrAuthor != ""){
+                    if ((rs.getString(2) == bookNameOrAuthor) || rs.getString(3) == bookNameOrAuthor){
+                        bookFound = true;
+
+                    }
+                }
+                if (bookFound) {
+                    System.out.println("\nID-----------Author-----------Name-----------Stock");
+                    System.out.println(rs.getInt(1) + "              " + rs.getString(2) + "              " + rs.getString(3) + "           " + rs.getInt(4) + "\n");
+                    System.out.println("--------------------------------------------------");
+                    break;
                 }
                 rowCounter2++;
             }
