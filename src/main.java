@@ -121,7 +121,14 @@ public class main {
 
                 break;
             case (3):
-                // return a book
+                System.out.println("Would you like to return your book?\n1). Yes\n2). No");
+                if(scan.nextInt() == 1){
+                    System.out.println("Enter the id of the book you are returning: ");
+                    ms.returnBook(scan.nextInt());
+                } else {
+                    goTo();
+                }
+
                 break;
             case (4):
                 System.exit(0);

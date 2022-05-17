@@ -79,6 +79,9 @@ public class SQLConnector {
 
     public int getUserCreatedID() {
         int userCreatedID = 0;
+        String username = "";
+        String userEmailAddress = "";
+
         int numberOfRows = 0;
         try {
             ResultSet rs = statement.executeQuery("SELECT * FROM users ");
@@ -207,6 +210,30 @@ public class SQLConnector {
         }catch (SQLException se){
             System.out.println(se);
             System.out.println("Error Code 11");
+        }
+    }
+
+    public void returnBook(int bookID){
+        int rowCounter = 1;
+        boolean rowFound = false;
+        try {
+            ResultSet rs = statement.executeQuery("SELECT id FROM books ");
+            while (rs.next() && rowFound == false){
+                rs.absolute(rowCounter);
+                if ((rs.getString(1)).equals(String.valueOf(bookID))) {
+                    deleteFromDatabase("books", "id", String.valueOf(bookID));
+                    System.out.println("Book Returned!");
+                    rowFound = true;
+                }
+                rowCounter++;
+
+            }
+            if(!(rowFound)) {
+                System.out.println("Failed to Return!");
+            }
+        } catch (SQLException se) {
+            System.out.println(se);
+            System.out.println("Error Code 12");
         }
     }
 }
