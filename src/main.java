@@ -133,10 +133,10 @@ public class main {
                         ms.checkoutBookUpdateUserList(0, id_number, true, true);
                         ms.checkoutBookUpdateBookList(ms.returnBookUpdateBookList(bookID), bookID);
                     } else {
-                        System.out.println("Either you didn't check out this book or this book is not in the library!");
+                        System.out.println("Either you didn't check out this book or this book is not in the library! ");
                     }
                 } else {
-                    System.out.println("Did not successfully return!");
+                    System.out.println("Did not successfully return! ");
                 }
                 goTo();
                 break;
