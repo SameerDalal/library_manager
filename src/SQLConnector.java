@@ -154,13 +154,17 @@ public class SQLConnector {
         return toContinue;
     }
 
-    public void checkoutBookUpdateUserList(int bookID, int userID, boolean toContinue1){
+    public void checkoutBookUpdateUserList(int bookID, int userID, boolean toContinue1, boolean returningBook){
         if(toContinue1){
             try{
                 ResultSet rs = statement.executeQuery("SELECT * FROM users ");
                 if(rs.next()) {
                     statement.executeUpdate("UPDATE `users` SET `Book Checked Out` = " + "'" + bookID + "'" + " WHERE `users`.`id` = " + userID);
-                    System.out.println("Successfully checked out the book!");
+                    if (!returningBook) {
+                        System.out.println("Successfully checked out the book!");
+                    } else {
+                        System.out.println("Successfully returned the book!");
+                    }
                 }
             } catch (SQLException se){
                 System.out.println(se);
@@ -213,16 +217,14 @@ public class SQLConnector {
         }
     }
 
-    public void returnBook(int bookID){
+    public boolean returnBook(int bookID){
         int rowCounter = 1;
         boolean rowFound = false;
         try {
             ResultSet rs = statement.executeQuery("SELECT id FROM books ");
             while (rs.next() && rowFound == false){
                 rs.absolute(rowCounter);
-                if ((rs.getString(1)).equals(String.valueOf(bookID))) {
-                    deleteFromDatabase("books", "id", String.valueOf(bookID));
-                    System.out.println("Book Returned!");
+                if (Integer.parseInt(rs.getString(1)) == (bookID)) {
                     rowFound = true;
                 }
                 rowCounter++;
@@ -235,6 +237,57 @@ public class SQLConnector {
             System.out.println(se);
             System.out.println("Error Code 12");
         }
+        return rowFound;
+    }
+
+    public String[] returnBookUpdateBookList(int book_id){
+        String[] bookProperties = new String[2];
+        int rowCounter = 0;
+        try {
+            ResultSet rs = statement.executeQuery("SELECT * FROM books ");
+            while (rs.next()){
+                rowCounter++;
+                if (rs.getInt(1) == book_id){
+                    rs.absolute(rowCounter);
+                    if (rs.getInt(4) > 0){
+                        bookProperties[0] = String.valueOf(rs.getInt(4)+1);
+                        bookProperties[1] = "True";
+                    }
+                }
+            }
+        } catch (SQLException se) {
+            System.out.println(se);
+            System.out.println("Error Code 13");
+        }
+        return bookProperties;
+
+    }
+
+    public boolean checkUserHasBook(int user_id, int bookid){
+        boolean userHasBook = false;
+        String bookIDFromTable = "";
+        try{
+
+            int rowCounter = 1;
+            boolean rowFound = false;
+
+            ResultSet rs = statement.executeQuery("SELECT * FROM users ");
+            while (rs.next() && !(rowFound)){
+                rs.absolute(rowCounter);
+                if(rs.getInt(1) == user_id){
+                    bookIDFromTable = rs.getString(4);
+                    rowFound = true;
+                }
+                rowCounter++;
+            }
+        } catch (SQLException se){
+            System.out.println(se);
+            System.out.println("Error Code 14");
+        }
+        if(bookid == Integer.parseInt(bookIDFromTable)){
+            userHasBook = true;
+        }
+        return userHasBook;
     }
 }
 

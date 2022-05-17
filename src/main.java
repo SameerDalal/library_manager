@@ -1,3 +1,5 @@
+import com.mysql.cj.jdbc.exceptions.MySQLStatementCancelledException;
+
 import java.util.Scanner;
 
 public class main {
@@ -57,22 +59,25 @@ public class main {
                 goTo();
                 break;
             case (3):
+                Scanner scan1 = new Scanner(System.in).useDelimiter("\n");
                 System.out.println("ID:");
-                int ID = scan.nextInt();
+                int ID = scan1.nextInt();
 
                 System.out.println("Author: ");
-                String author = scan.next();
+                String author = scan1.next();
 
                 System.out.println("Name: ");
-                String nameOfBook = scan.next();
+                String nameOfBook = scan1.next();
 
                 System.out.println("Stock: ");
-                String stock = scan.next();
+                String stock = scan1.next();
 
                 ms.addToDatabase(ID, author, nameOfBook, stock , "books ");
-                goTo();
+                loginToUserAccount();
                 break;
             case (4):
+                scan.close();
+                ms.SQLDisconnector();
                 System.exit(0);
                 break;
         }
@@ -89,7 +94,7 @@ public class main {
                 if (bookID == 0){
                     goTo();
                 } else {
-                    ms.checkoutBookUpdateUserList(bookID,id_number,ms.checkoutBookUpdateBookList(ms.bookCheckoutProcedure(bookID),bookID));
+                    ms.checkoutBookUpdateUserList(bookID,id_number,ms.checkoutBookUpdateBookList(ms.bookCheckoutProcedure(bookID),bookID), false);
                     goTo();
                 }
                 break;
@@ -121,19 +126,27 @@ public class main {
 
                 break;
             case (3):
-                System.out.println("Would you like to return your book?\n1). Yes\n2). No");
-                if(scan.nextInt() == 1){
-                    System.out.println("Enter the id of the book you are returning: ");
-                    ms.returnBook(scan.nextInt());
+                System.out.println("Enter the id of the book you are returning: ");
+                bookID = scan.nextInt();
+                if(ms.returnBook(bookID)){
+                    if (ms.checkUserHasBook(id_number,bookID)) {
+                        ms.checkoutBookUpdateUserList(0, id_number, true, true);
+                        ms.checkoutBookUpdateBookList(ms.returnBookUpdateBookList(bookID), bookID);
+                    } else {
+                        System.out.println("Either you didn't check out this book or this book is not in the library!");
+                    }
                 } else {
-                    goTo();
+                    System.out.println("Did not successfully return!");
                 }
-
+                goTo();
                 break;
             case (4):
+                scan.close();
+                ms.SQLDisconnector();
                 System.exit(0);
                 break;
         }
+        scan.close();
         ms.SQLDisconnector();
     }
 }
