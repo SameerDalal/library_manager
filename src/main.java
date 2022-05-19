@@ -6,6 +6,9 @@ public class main {
 
     Scanner scan = new Scanner(System.in);
     SQLConnector ms = new SQLConnector();
+    checkoutAndReturn checkAndReturn = new checkoutAndReturn();
+    idIdentifiers ii =  new idIdentifiers();
+    addToDataBase atd = new addToDataBase();
     public int id_number = 0;
 
 
@@ -36,9 +39,9 @@ public class main {
 
                 String bookCheckedOut = "0";
 
-                ms.addToDatabase(id_value, name, email_address, bookCheckedOut, "users ");
+                atd.addToDatabase(id_value, name, email_address, bookCheckedOut, "users ");
 
-                id_number = ms.getUserCreatedID();
+                id_number = ii.getUserCreatedID();
 
                 goTo();
                 break;
@@ -49,7 +52,7 @@ public class main {
 
                 boolean IDFalse = true;
                 while (IDFalse) {
-                    if (!(ms.checkIfIDExists(id_number))) {
+                    if (!(ii.checkIfIDExists(id_number))) {
                         System.out.println("The ID you entered is not in the database, try again.");
                         id_number = scan.nextInt();
                     } else {
@@ -72,7 +75,7 @@ public class main {
                 System.out.println("Stock: ");
                 String stock = scan1.next();
 
-                ms.addToDatabase(ID, author, nameOfBook, stock , "books ");
+                atd.addToDatabase(ID, author, nameOfBook, stock , "books ");
                 loginToUserAccount();
                 break;
             case (4):
@@ -94,7 +97,7 @@ public class main {
                 if (bookID == 0){
                     goTo();
                 } else {
-                    ms.checkoutBookUpdateUserList(bookID,id_number,ms.checkoutBookUpdateBookList(ms.bookCheckoutProcedure(bookID),bookID), false);
+                    checkAndReturn.checkoutAndReturnBookUpdateUserList(bookID,id_number,checkAndReturn.checkoutBookUpdateBookList(checkAndReturn.bookCheckoutProcedure(bookID),bookID), false);
                     goTo();
                 }
                 break;
@@ -118,7 +121,7 @@ public class main {
 
                     }
 
-                    ms.searchInBookList(id,bookNameOrAuthor);
+                    checkAndReturn.searchInBookList(id,bookNameOrAuthor);
 
 
                 }
@@ -128,10 +131,10 @@ public class main {
             case (3):
                 System.out.println("Enter the id of the book you are returning: ");
                 bookID = scan.nextInt();
-                if(ms.returnBook(bookID)){
+                if(checkAndReturn.returnBook(bookID)){
                     if (ms.checkUserHasBook(id_number,bookID)) {
-                        ms.checkoutBookUpdateUserList(0, id_number, true, true);
-                        ms.checkoutBookUpdateBookList(ms.returnBookUpdateBookList(bookID), bookID);
+                        checkAndReturn.checkoutAndReturnBookUpdateUserList(0, id_number, true, true);
+                        checkAndReturn.checkoutBookUpdateBookList(checkAndReturn.returnBookUpdateBookList(bookID), bookID);
                     } else {
                         System.out.println("Either you didn't check out this book or this book is not in the library! ");
                     }
