@@ -12,7 +12,6 @@ public class addToDataBase  extends  SQLConnector{
 
     public void addToDatabase(int ID, String val1, String val2, String val3, String table) {
         int counter = 0;
-
         try {
             statement.executeUpdate(addDatabaseSQLString(ID,val1, val2, val3, table));
         } catch (SQLException se) {
@@ -28,6 +27,7 @@ public class addToDataBase  extends  SQLConnector{
         }
     }
 
+    @SuppressWarnings("unused")
     public void deleteFromDatabase(String table3, String rowName1, String rowValue1) {
         int counter1 = 0;
         try {

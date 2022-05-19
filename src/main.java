@@ -1,5 +1,3 @@
-import com.mysql.cj.jdbc.exceptions.MySQLStatementCancelledException;
-
 import java.util.Scanner;
 
 public class main {
@@ -11,24 +9,16 @@ public class main {
     addToDataBase atd = new addToDataBase();
     public int id_number = 0;
 
-
     public static void main(String[] args){
         main m = new main();
         m.loginToUserAccount();
-
-
-        //EmailSender em = new EmailSender();
-        //em.sendEmail("sameerdalal747@gmail.com", "hello", "test");
     }
 
     public void loginToUserAccount() {
-        ms.SQLConnector();
-
+        ms.connectToSQL();
         System.out.println("1). New User\n2). Existing User\n3). Library Staff - Add book to database\n4). Quit");
-
         switch (scan.nextInt()) {
             case (1):
-
                 int id_value = 0;
 
                 System.out.println("Enter your name: ");
@@ -61,6 +51,7 @@ public class main {
                 }
                 goTo();
                 break;
+
             case (3):
                 Scanner scan1 = new Scanner(System.in).useDelimiter("\n");
                 System.out.println("ID:");
@@ -78,6 +69,7 @@ public class main {
                 atd.addToDatabase(ID, author, nameOfBook, stock , "books ");
                 loginToUserAccount();
                 break;
+
             case (4):
                 scan.close();
                 ms.SQLDisconnector();
@@ -89,7 +81,6 @@ public class main {
     public void goTo(){
 
         System.out.println("Options: \n1). Checkout a book\n2). Search for a book in the database\n3). Return a book\n4). Quit");
-
         switch (scan.nextInt()){
             case (1):
                 System.out.println("Enter the book ID of the book you would like to checkout or enter '0' to return to the menu\n");
@@ -101,6 +92,7 @@ public class main {
                     goTo();
                 }
                 break;
+
             case (2):
                 System.out.println("1). Print out entire book list\n2). Search book by ID, Author, or Book Name");
                 int path = scan.nextInt();
@@ -116,18 +108,13 @@ public class main {
                     } else {
                         Scanner scan1 = new Scanner(System.in);
                         System.out.println("Enter Book Name or Book Author: ");
-
                         bookNameOrAuthor = scan1.nextLine();
-
                     }
-
                     checkAndReturn.searchInBookList(id,bookNameOrAuthor);
-
-
                 }
                 goTo();
-
                 break;
+
             case (3):
                 System.out.println("Enter the id of the book you are returning: ");
                 bookID = scan.nextInt();

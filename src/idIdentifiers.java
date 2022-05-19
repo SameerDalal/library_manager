@@ -1,16 +1,12 @@
-import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class idIdentifiers extends  SQLConnector{
 
     public int getUserCreatedID() {
         int userCreatedID = 0;
-        String username = "";
-        String userEmailAddress = "";
-
         int numberOfRows = 0;
         try {
-            ResultSet rs = statement.executeQuery("SELECT * FROM users ");
+            setResultSet("*", "users");
             while (rs.next()){
                 numberOfRows++;
             }
@@ -27,7 +23,7 @@ public class idIdentifiers extends  SQLConnector{
     public boolean checkIfIDExists(int idInputted){
         boolean idExists = false;
         try {
-            ResultSet rs = statement.executeQuery("SELECT id FROM users ");
+            setResultSet("*", "users");
             while(rs.next()){
                 if (rs.getInt(1) == idInputted){
                     idExists = true;

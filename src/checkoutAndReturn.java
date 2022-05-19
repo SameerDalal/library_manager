@@ -1,6 +1,4 @@
 import org.jetbrains.annotations.NotNull;
-
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Scanner;
 
@@ -11,12 +9,12 @@ public class checkoutAndReturn extends SQLConnector{
         String[] bookProperties = new String[2];
         int rowCounter = 0;
         try {
-            ResultSet rs = statement.executeQuery("SELECT * FROM books ");
+            setResultSet("*" ,"books");
             while (rs.next()){
                 rowCounter++;
                 if (rs.getInt(1) == book_id){
                     rs.absolute(rowCounter);
-                    System.out.println("Confirm book:\nAuthor: " + rs.getString(2) + "\nBook Name: " + rs.getString(3) + "\nStock: " +rs.getInt(4) + "\n");
+                    System.out.println("Confirm book:\nAuthor: " + rs.getString(2) + "\nBook Name: " + rs.getString(3) + "\nStock: " + rs.getInt(4) + "\n");
                     System.out.println("1).Confirm\n2).Decline\n");
                     int confirmOrDecline = scan.nextInt();
                     if (confirmOrDecline == 1 && rs.getInt(4) > 0){
@@ -49,7 +47,7 @@ public class checkoutAndReturn extends SQLConnector{
     public void checkoutAndReturnBookUpdateUserList(int bookID, int userID, boolean toContinue1, boolean returningBook){
         if(toContinue1){
             try{
-                ResultSet rs = statement.executeQuery("SELECT * FROM users ");
+                setResultSet("*" , "users");
                 if(rs.next()) {
                     statement.executeUpdate("UPDATE `users` SET `Book Checked Out` = " + "'" + bookID + "'" + " WHERE `users`.`id` = " + userID);
                     if (!returningBook) {
@@ -64,11 +62,12 @@ public class checkoutAndReturn extends SQLConnector{
             }
         }
     }
+
     public void searchInBookList(int id, String bookNameOrAuthor){
         int rowCounter2 = 1;
         boolean bookFound = false;
         try{
-            ResultSet rs = statement.executeQuery("SELECT * FROM books ");
+            setResultSet("*", "books");
             while(rs.next() && bookFound == false){
                 rs.absolute(rowCounter2);
                 if ((rs.getString(2).equals(bookNameOrAuthor)) || (rs.getString(3).equals(bookNameOrAuthor)) || rs.getInt(1) == id){
@@ -82,7 +81,7 @@ public class checkoutAndReturn extends SQLConnector{
             if(!(bookFound)){
                 System.out.println("This book is not in the library!");
             }
-        }catch (SQLException se){
+        } catch (SQLException se){
             System.out.println(se);
             System.out.println("Error Code 11");
         }
@@ -92,14 +91,13 @@ public class checkoutAndReturn extends SQLConnector{
         int rowCounter = 1;
         boolean rowFound = false;
         try {
-            ResultSet rs = statement.executeQuery("SELECT id FROM books ");
+            setResultSet("id", "books");
             while (rs.next() && rowFound == false){
                 rs.absolute(rowCounter);
                 if (Integer.parseInt(rs.getString(1)) == (bookID)) {
                     rowFound = true;
                 }
                 rowCounter++;
-
             }
             if(!(rowFound)) {
                 System.out.println("Failed to Return!");
@@ -115,7 +113,7 @@ public class checkoutAndReturn extends SQLConnector{
         String[] bookProperties = new String[2];
         int rowCounter = 0;
         try {
-            ResultSet rs = statement.executeQuery("SELECT * FROM books ");
+            setResultSet("*", "books");
             while (rs.next()){
                 rowCounter++;
                 if (rs.getInt(1) == book_id){
@@ -131,7 +129,5 @@ public class checkoutAndReturn extends SQLConnector{
             System.out.println("Error Code 13");
         }
         return bookProperties;
-
     }
-
 }
