@@ -97,7 +97,7 @@ public class main {
                 System.out.println("1). Print out entire book list\n2). Search book by ID, Author, or Book Name");
                 int path = scan.nextInt();
                 if(path == 1){
-                    ms.printBookList();
+                    checkAndReturn.printBookList();
                 } else {
                     System.out.println("Search by:\n1). ID\n2). Book Name Or Author");
                     int id = 0;
@@ -119,7 +119,7 @@ public class main {
                 System.out.println("Enter the id of the book you are returning: ");
                 bookID = scan.nextInt();
                 if(checkAndReturn.returnBook(bookID)){
-                    if (ms.checkUserHasBook(id_number,bookID)) {
+                    if (checkAndReturn.checkUserHasBook(id_number,bookID)) {
                         checkAndReturn.checkoutAndReturnBookUpdateUserList(0, id_number, true, true);
                         checkAndReturn.checkoutBookUpdateBookList(checkAndReturn.returnBookUpdateBookList(bookID), bookID);
                     } else {

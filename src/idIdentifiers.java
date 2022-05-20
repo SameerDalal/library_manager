@@ -1,8 +1,9 @@
 import java.sql.SQLException;
 
-public class idIdentifiers extends  SQLConnector{
-
+public class idIdentifiers extends SQLConnector{
+    // child class of SQLConnector
     public int getUserCreatedID() {
+        //fetches the user's id.
         int userCreatedID = 0;
         int numberOfRows = 0;
         try {
@@ -21,6 +22,7 @@ public class idIdentifiers extends  SQLConnector{
     }
 
     public boolean checkIfIDExists(int idInputted){
+        // checks in the user database if the id inputted exists in the dataset.
         boolean idExists = false;
         try {
             setResultSet("*", "users");

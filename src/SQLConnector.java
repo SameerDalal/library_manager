@@ -2,7 +2,7 @@ import java.sql.*;
 import java.sql.DriverManager;
 
 public class SQLConnector {
-
+    //parent class
     static Connection connection = null;
     static Statement statement = null;
     static ResultSet rs;
@@ -23,6 +23,7 @@ public class SQLConnector {
 
     public void SQLDisconnector() {
         try {
+            // disconnecting JDBC Driver
             connection.close();
         } catch (SQLException se) {
             System.out.println(se + "\n");
@@ -32,53 +33,12 @@ public class SQLConnector {
     }
 
     public void setResultSet(String whatToSelect, String tableName) {
+        // sets what the ResultSet Object should be. This method is called upon to set a new value
+        // to the result set instead of creating new ResultSet Objects each time you need to execute a query
         try {
             rs = statement.executeQuery("SELECT " + whatToSelect + " FROM " + tableName + " ");
         } catch (SQLException se) {
             System.out.println(se);
         }
-    }
-
-    public void printBookList() {
-        System.out.println("ID-----------Author-----------Name-----------Stock");
-        int rowCounter1 = 1;
-        try {
-            ResultSet rs = statement.executeQuery("SELECT * FROM books ");
-            while (rs.next()) {
-                rs.absolute(rowCounter1);
-                System.out.println(rs.getInt(1) + "              " + rs.getString(2) + "              " + rs.getString(3) + "              " + rs.getInt(4));
-                System.out.println("---------------------------------------------------");
-                rowCounter1++;
-            }
-        } catch (SQLException se) {
-            System.out.println(se);
-            System.out.println("Error Code 10");
-        }
-    }
-
-    public boolean checkUserHasBook(int user_id, int bookid) {
-        boolean userHasBook = false;
-        String bookIDFromTable = "";
-        try {
-            int rowCounter = 1;
-            boolean rowFound = false;
-
-            ResultSet rs = statement.executeQuery("SELECT * FROM users ");
-            while (rs.next() && !(rowFound)) {
-                rs.absolute(rowCounter);
-                if (rs.getInt(1) == user_id) {
-                    bookIDFromTable = rs.getString(4);
-                    rowFound = true;
-                }
-                rowCounter++;
-            }
-        } catch (SQLException se) {
-            System.out.println(se);
-            System.out.println("Error Code 14");
-        }
-        if (bookid == Integer.parseInt(bookIDFromTable)) {
-            userHasBook = true;
-        }
-        return userHasBook;
     }
 }
