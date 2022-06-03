@@ -10,8 +10,9 @@ public class main {
     public int id_number = 0;
 
     public static void main(String[] args){
-        main m = new main();
-        m.loginToUserAccount();
+        emailSender em = new emailSender("sameerdalal747@gmail.com","hi", "header");
+        //main m = new main();
+        //m.loginToUserAccount();
     }
 
     public void loginToUserAccount() {
@@ -34,6 +35,8 @@ public class main {
                 id_number = ii.getUserCreatedID();
 
                 goTo();
+                // calling the 'goTo' method recursively, at a large scale could cause a stack overflow error
+                // before the method is completed, the same method is added to the call stack resulting in the overflow
                 break;
 
             case(2):

@@ -8,6 +8,8 @@ public class SQLConnector {
     static ResultSet rs;
 
     public void connectToSQL() {
+
+
         // registering JDBC Driver
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
