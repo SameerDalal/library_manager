@@ -35,8 +35,6 @@ public class main {
                 id_number = ii.getUserCreatedID();
 
                 goTo();
-                // calling the 'goTo' method recursively, at a large scale could cause a stack overflow error
-                // before the method is completed, the same method is added to the call stack resulting in the overflow
                 break;
 
             case(2):
@@ -116,6 +114,8 @@ public class main {
                     checkAndReturn.searchInBookList(id,bookNameOrAuthor);
                 }
                 goTo();
+                // calling the 'goTo' method recursively, at a large scale could cause a stack overflow error
+                // before the method is completed, the same method is added to the call stack resulting in the overflow
                 break;
 
             case (3):
