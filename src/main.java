@@ -79,62 +79,59 @@ public class main {
     }
 
     public void goTo(){
-
-        System.out.println("Options: \n1). Checkout a book\n2). Search for a book in the database\n3). Return a book\n4). Quit");
-        switch (scan.nextInt()){
-            case (1):
-                System.out.println("Enter the book ID of the book you would like to checkout or enter '0' to return to the menu\n");
-                int bookID = scan.nextInt();
-                if (bookID == 0){
-                    goTo();
-                } else {
-                    checkAndReturn.checkoutAndReturnBookUpdateUserList(bookID,id_number,checkAndReturn.checkoutBookUpdateBookList(checkAndReturn.bookCheckoutProcedure(bookID),bookID), false);
-                }
-                break;
-
-            case (2):
-                System.out.println("1). Print out entire book list\n2). Search book by ID, Author, or Book Name");
-                int path = scan.nextInt();
-                if(path == 1){
-                    checkAndReturn.printBookList();
-                } else {
-                    System.out.println("Search by:\n1). ID\n2). Book Name Or Author");
-                    int id = 0;
-                    String bookNameOrAuthor = "";
-                    if(scan.nextInt() == 1){
-                        System.out.println("Enter ID: ");
-                        id = scan.nextInt();
+        boolean wantToContinue = true;
+        do {
+            System.out.println("Options: \n1). Checkout a book\n2). Search for a book in the database\n3). Return a book\n4). Quit");
+            switch (scan.nextInt()) {
+                case (1):
+                    System.out.println("Enter the book ID of the book you would like to checkout or enter '0' to return to the menu\n");
+                    int bookID = scan.nextInt();
+                    if (bookID == 0) {
+                        goTo();
                     } else {
-                        Scanner scan1 = new Scanner(System.in);
-                        System.out.println("Enter Book Name or Book Author: ");
-                        bookNameOrAuthor = scan1.nextLine();
+                        checkAndReturn.checkoutAndReturnBookUpdateUserList(bookID, id_number, checkAndReturn.checkoutBookUpdateBookList(checkAndReturn.bookCheckoutProcedure(bookID), bookID), false);
                     }
-                    checkAndReturn.searchInBookList(id,bookNameOrAuthor);
-                }
-                break;
+                    break;
 
-            case (3):
-                System.out.println("Enter the id of the book you are returning: ");
-                bookID = scan.nextInt();
-                if(checkAndReturn.returnBook(bookID)){
-                    if (checkAndReturn.checkUserHasBook(id_number,bookID)) {
-                        checkAndReturn.checkoutAndReturnBookUpdateUserList(0, id_number, true, true);
-                        checkAndReturn.checkoutBookUpdateBookList(checkAndReturn.returnBookUpdateBookList(bookID), bookID);
+                case (2):
+                    System.out.println("1). Print out entire book list\n2). Search book by ID, Author, or Book Name");
+                    int path = scan.nextInt();
+                    if (path == 1) {
+                        checkAndReturn.printBookList();
                     } else {
-                        System.out.println("Either you didn't check out this book or this book is not in the library! ");
+                        System.out.println("Search by:\n1). ID\n2). Book Name Or Author");
+                        int id = 0;
+                        String bookNameOrAuthor = "";
+                        if (scan.nextInt() == 1) {
+                            System.out.println("Enter ID: ");
+                            id = scan.nextInt();
+                        } else {
+                            Scanner scan1 = new Scanner(System.in);
+                            System.out.println("Enter Book Name or Book Author: ");
+                            bookNameOrAuthor = scan1.nextLine();
+                        }
+                        checkAndReturn.searchInBookList(id, bookNameOrAuthor);
                     }
-                } else {
-                    System.out.println("Did not successfully return! ");
-                }
-                break;
-            case (4):
-                scan.close();
-                ms.SQLDisconnector();
-                System.exit(0);
-                break;
-        }
-        goTo();
+                    break;
+
+                case (3):
+                    System.out.println("Enter the id of the book you are returning: ");
+                    bookID = scan.nextInt();
+                    if (checkAndReturn.returnBook(bookID)) {
+                        if (checkAndReturn.checkUserHasBook(id_number, bookID)) {
+                            checkAndReturn.checkoutAndReturnBookUpdateUserList(0, id_number, true, true);
+                            checkAndReturn.checkoutBookUpdateBookList(checkAndReturn.returnBookUpdateBookList(bookID), bookID);
+                        } else {
+                            System.out.println("Either you didn't check out this book or this book is not in the library! ");
+                        }
+                    } else {
+                        System.out.println("Did not successfully return! ");
+                    }
+                    break;
+                case (4):
+                    wantToContinue = false;
+                    break;
+            }
+        } while (wantToContinue);
     }
-    // calling the 'goTo' method recursively, at a large scale could cause a stack overflow error
-    // before the method is completed, the same method is added to the call stack resulting in the overflow
 }
