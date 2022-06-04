@@ -10,9 +10,8 @@ public class main {
     public int id_number = 0;
 
     public static void main(String[] args){
-        emailSender em = new emailSender("sameerdalal747@gmail.com","hi", "header");
-        //main m = new main();
-        //m.loginToUserAccount();
+        main m = new main();
+        m.loginToUserAccount();
     }
 
     public void loginToUserAccount() {
@@ -90,7 +89,6 @@ public class main {
                     goTo();
                 } else {
                     checkAndReturn.checkoutAndReturnBookUpdateUserList(bookID,id_number,checkAndReturn.checkoutBookUpdateBookList(checkAndReturn.bookCheckoutProcedure(bookID),bookID), false);
-                    goTo();
                 }
                 break;
 
@@ -113,9 +111,6 @@ public class main {
                     }
                     checkAndReturn.searchInBookList(id,bookNameOrAuthor);
                 }
-                goTo();
-                // calling the 'goTo' method recursively, at a large scale could cause a stack overflow error
-                // before the method is completed, the same method is added to the call stack resulting in the overflow
                 break;
 
             case (3):
@@ -131,7 +126,6 @@ public class main {
                 } else {
                     System.out.println("Did not successfully return! ");
                 }
-                goTo();
                 break;
             case (4):
                 scan.close();
@@ -139,7 +133,8 @@ public class main {
                 System.exit(0);
                 break;
         }
-        scan.close();
-        ms.SQLDisconnector();
+        goTo();
     }
+    // calling the 'goTo' method recursively, at a large scale could cause a stack overflow error
+    // before the method is completed, the same method is added to the call stack resulting in the overflow
 }
