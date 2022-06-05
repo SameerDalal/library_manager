@@ -24,7 +24,7 @@ In the method `connectToSQL()` you many need to change the port connection. For 
 ```java
 connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/library_database", "root", "");
 ```
-On this line change `3360` to your port number. To find your port number look in the `Port(s)` column in MySQL row in the XAMPP once you have started mySQL.
+On this line change `3360` to your port number. To find your port number look in the `Port(s)` column in MySQL row on XAMPP once you have started mySQL.
 
 ## Features
 
@@ -35,7 +35,7 @@ On this line change `3360` to your port number. To find your port number look in
 * Search for book in DB
   * Print out entire book list
   * Search by ID, Author, or Book Name
-* Return Book
+* Return a book
 
 ## Notes
 
