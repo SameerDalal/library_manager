@@ -15,67 +15,70 @@ public class main {
     }
 
     public void loginToUserAccount() {
-        ms.connectToSQL();
-        System.out.println("1). New User\n2). Existing User\n3). Library Staff - Add book to database\n4). Quit");
-        switch (scan.nextInt()) {
-            case (1):
-                int id_value = 0;
+        boolean continueToGoTo = false;
+            ms.connectToSQL();
+        do {
+            System.out.println("1). New User\n2). Existing User\n3). Library Staff - Add book to database\n4). Quit");
+            switch (scan.nextInt()) {
+                case (1):
+                    int id_value = 0;
 
-                System.out.println("Enter your name: ");
-                String name = scan.next();
+                    System.out.println("Enter your name: ");
+                    String name = scan.next();
 
-                System.out.println("Enter your email address: ");
-                String email_address = scan.next();
+                    System.out.println("Enter your email address: ");
+                    String email_address = scan.next();
 
-                String bookCheckedOut = "0";
+                    String bookCheckedOut = "0";
 
-                atd.addToDatabase(id_value, name, email_address, bookCheckedOut, "users ");
+                    atd.addToDatabase(id_value, name, email_address, bookCheckedOut, "users ");
 
-                id_number = ii.getUserCreatedID();
+                    id_number = ii.getUserCreatedID();
 
-                goTo();
-                break;
+                    continueToGoTo = true;
+                    break;
 
-            case(2):
-                System.out.println("To log into your account type your id number: ");
-                id_number = scan.nextInt();
+                case (2):
+                    System.out.println("To log into your account type your id number: ");
+                    id_number = scan.nextInt();
 
-                boolean IDFalse = true;
-                while (IDFalse) {
-                    if (!(ii.checkIfIDExists(id_number))) {
-                        System.out.println("The ID you entered is not in the database, try again.");
-                        id_number = scan.nextInt();
-                    } else {
-                        IDFalse = false;
+                    boolean IDFalse = true;
+                    while (IDFalse) {
+                        if (!(ii.checkIfIDExists(id_number))) {
+                            System.out.println("The ID you entered is not in the database, try again.");
+                            id_number = scan.nextInt();
+                        } else {
+                            IDFalse = false;
+                        }
                     }
-                }
-                goTo();
-                break;
+                    continueToGoTo = true;
+                    break;
 
-            case (3):
-                Scanner scan1 = new Scanner(System.in).useDelimiter("\n");
-                System.out.println("ID:");
-                int ID = scan1.nextInt();
+                case (3):
+                    Scanner scan1 = new Scanner(System.in).useDelimiter("\n");
+                    System.out.println("ID:");
+                    int ID = scan1.nextInt();
 
-                System.out.println("Author: ");
-                String author = scan1.next();
+                    System.out.println("Author: ");
+                    String author = scan1.next();
 
-                System.out.println("Name: ");
-                String nameOfBook = scan1.next();
+                    System.out.println("Name: ");
+                    String nameOfBook = scan1.next();
 
-                System.out.println("Stock: ");
-                String stock = scan1.next();
+                    System.out.println("Stock: ");
+                    String stock = scan1.next();
 
-                atd.addToDatabase(ID, author, nameOfBook, stock , "books ");
-                loginToUserAccount();
-                break;
+                    atd.addToDatabase(ID, author, nameOfBook, stock, "books ");
+                    break;
 
-            case (4):
-                scan.close();
-                ms.SQLDisconnector();
-                System.exit(0);
-                break;
-        }
+                case (4):
+                    scan.close();
+                    ms.SQLDisconnector();
+                    System.exit(0);
+                    break;
+            }
+        } while (continueToGoTo == false);
+            goTo();
     }
 
     public void goTo(){
