@@ -39,4 +39,4 @@ On this line change `3360` to your port number. To find your port number look in
 
 ## Notes
 
-No external jars needed.
+External MySQL Connector Libaray can be found [here](https://dev.mysql.com/downloads/connector/j/)
