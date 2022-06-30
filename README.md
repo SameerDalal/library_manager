@@ -37,6 +37,6 @@ On this line change `3360` to your port number. To find your port number look in
   * Search by ID, Author, or Book Name
 * Return a book
 
-## Notes
+## External Libraries
 
-External MySQL Connector Libaray can be found [here](https://dev.mysql.com/downloads/connector/j/)
+External MySQL Connector Library can be found [here](https://dev.mysql.com/downloads/connector/j/)
