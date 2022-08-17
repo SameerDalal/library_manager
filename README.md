@@ -1,6 +1,6 @@
 # Library Manager
 This program is made to replicate a library that manages users checking out books and books in the library.
-The library manager uses MySQL with phpMyAdmin to store user and book data.
+The library manager uses MySQL to store user and book data.
 
 ## Get Started
 Install [XAMPP Control Panel](https://www.apachefriends.org/index.html) with the `Apache` and `MySQL` modules to use phpMyAdmin.
