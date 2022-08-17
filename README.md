@@ -19,7 +19,7 @@ In phpMyAdmin create a new database called `library_database` with two tables ca
 
 <img src = "./images/lib2.png" width=600 height=120>
 
-In the method `connectToSQL()` you many need to change the port connection. For example my port is `3306`.
+In the method `connectToSQL()` you many need to change to your port connection. For example my port is `3306`.
 
 ```java
 connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/library_database", "root", "");
