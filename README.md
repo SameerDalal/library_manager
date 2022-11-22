@@ -1,5 +1,5 @@
 # Library Manager
-This program is made to replicate a library that manages users checking out books and books in the library.
+This program is made to replicate a library that manages users checking out books in the library.
 The library manager uses MySQL to store user and book data.
 
 ## Get Started
