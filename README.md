@@ -3,7 +3,11 @@ This program is made to replicate a library that manages users checking out and 
 The library manager uses MySQL to store user and book data.
 
 ## Get Started
-Install [XAMPP Control Panel](https://www.apachefriends.org/index.html) with the `Apache` and `MySQL` modules to use phpMyAdmin.
+1). Clone the repository:
+```cmd
+git clone https://github.com/SameerDalal/library_manager.git
+```
+2). Install [XAMPP Control Panel](https://www.apachefriends.org/index.html) with the `Apache` and `MySQL` modules to use phpMyAdmin.
 
 
 ## Usage
